@@ -50,7 +50,6 @@
             transition: 0.3s; cursor: pointer;
             box-shadow: 0 0 15px var(--main-color);
         }
-        .btn-main:hover { transform: scale(1.03); filter: brightness(1.2); }
 
         .lista-links {
             display: none; margin-top: 20px; padding-top: 15px;
@@ -74,7 +73,6 @@
             cursor: pointer; font-size: 0.8rem; text-transform: uppercase;
             transition: 0.3s; font-weight: bold;
         }
-        .btn-color:hover { background: var(--main-color); color: #000; }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 
@@ -95,8 +93,8 @@
     <button class="btn-main" onclick="abrirLista()">Galeria de Xatspace</button>
 
     <div id="listaLinks" class="lista-links">
-        <button class="btn-link" onclick="abrir('https://gabr1777777.github.io/test2/')">Xatspace - Perfil 1 (Rosa) </button>
-        <button class="btn-link" onclick="abrir('https://gabr1777777.github.io/test1/')">Xatspace - Perfil 2 (azul) PASS: 1009</button>
+        <button class="btn-link" onclick="abrir('https://gabr1777777.github.io/test2/')">Xatspace - Perfil 1 (ROSA)</button>
+        <button class="btn-link" onclick="abrir('https://gabr1777777.github.io/test1/')">Xatspace - Perfil 2 (AZUL) PASS: 1009</button>
     </div>
 
     <button class="btn-color" onclick="nextColor()">COR</button>
@@ -119,14 +117,27 @@
         bg.appendChild(s);
     }
 
-    function getVisits() {
-        const url = "https://api.counterapi.dev/v1/xatspace_final_refresh_2026/increment";
-        fetch(url)
-            .then(res => res.json())
-            .then(data => { document.getElementById('display-count').innerText = data.count.toString().padStart(6, '0'); })
-            .catch(() => { document.getElementById('display-count').innerText = "000001"; });
+    // --- SISTEMA DE CONTADOR REFORMULADO ---
+    function countVisit() {
+        const display = document.getElementById('display-count');
+        // ID único para esta galeria para evitar conflitos
+        const galleryID = "galeria_xat_oficial_v2026_final";
+        
+        fetch(`https://api.countapi.xyz/hit/${galleryID}/visits`)
+        .then(res => res.json())
+        .then(res => {
+            display.innerHTML = res.value.toString().padStart(6, '0');
+        })
+        .catch(() => {
+            // Se a API externa falhar ou estiver bloqueada, usamos o local como garantia
+            let localCount = parseInt(localStorage.getItem('backup_hits')) || 0;
+            localCount++;
+            localStorage.setItem('backup_hits', localCount);
+            display.innerHTML = localCount.toString().padStart(6, '0');
+        });
     }
-    window.onload = getVisits;
+
+    window.onload = countVisit;
 
     const cores = ['#00d9ff', '#ff007f', '#00ff00', '#ffff00', '#ff4500', '#9400d3', '#ffffff', '#ff0000', '#0000ff', '#00ced1'];
     let corAtual = 0;
@@ -144,13 +155,9 @@
     function abrir(url) {
         const frame = document.getElementById('frame');
         const viewer = document.getElementById('viewer');
-        
         frame.src = "about:blank"; 
-        
         setTimeout(() => {
-            // Timestamp para forçar atualização e ignorar cache antigo
-            const cleanUrl = url + (url.includes('?') ? '&' : '?') + 'v=' + new Date().getTime();
-            frame.src = cleanUrl;
+            frame.src = url + "?v=" + Date.now();
             viewer.style.display = 'block';
         }, 50);
     }
