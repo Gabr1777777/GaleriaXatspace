@@ -95,8 +95,8 @@
     <button class="btn-main" onclick="abrirLista()">Galeria de Xatspace</button>
 
     <div id="listaLinks" class="lista-links">
-        <button class="btn-link" onclick="abrir('https://tinyurl.com/perfilrosa')">Xatspace - Perfil 1</button>
-        <button class="btn-link" onclick="abrir('https://tinyurl.com/perfilgab')">Xatspace - Perfil 2</button>
+        <button class="btn-link" onclick="abrir('https://cutt.ly/perfil-rosa-oficial')">Xatspace - Perfil 1</button>
+        <button class="btn-link" onclick="abrir('https://bit.ly/perfil-azul-gab')">Xatspace - Perfil 2</button>
     </div>
 
     <button class="btn-color" onclick="nextColor()">Mudar Cor</button>
@@ -120,7 +120,7 @@
     }
 
     function getVisits() {
-        const url = "https://api.counterapi.dev/v1/xatspace_galeria_oficial_2026/visits/increment";
+        const url = "https://api.counterapi.dev/v1/xatspace_final_2026/increment";
         fetch(url)
             .then(res => res.json())
             .then(data => { document.getElementById('display-count').innerText = data.count.toString().padStart(6, '0'); })
@@ -141,12 +141,13 @@
         lista.style.display = (lista.style.display === 'block') ? 'none' : 'block';
     }
 
-function abrir(url) {
-    // Adiciona um "carimbo" de tempo para evitar cache do navegador
-    const cleanUrl = url + (url.includes('?') ? '&' : '?') + 't=' + new Date().getTime();
-    document.getElementById('frame').src = cleanUrl;
-    document.getElementById('viewer').style.display = 'block';
-}
+    // --- FUNÇÃO ABRIR COM TRAVA ANTI-CACHE ---
+    function abrir(url) {
+        // Isso força o navegador a carregar o link "fresco" toda vez
+        const antiCache = url + "?t=" + Math.floor(Math.random() * 10000);
+        document.getElementById('frame').src = antiCache;
+        document.getElementById('viewer').style.display = 'block';
+    }
 
     function fechar() {
         document.getElementById('viewer').style.display = 'none';
