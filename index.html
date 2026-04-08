@@ -95,11 +95,11 @@
     <button class="btn-main" onclick="abrirLista()">Galeria de Xatspace</button>
 
     <div id="listaLinks" class="lista-links">
-        <button class="btn-link" onclick="abrir('https://tinyurl.com/perfilrosa')">Xatspace - Perfil 1</button>
-        <button class="btn-link" onclick="abrir('https://tinyurl.com/perfilgab')">Xatspace - Perfil 2</button>
+        <button class="btn-link" onclick="abrir('https://xatspace.com/perfilrosa')">Xatspace - Perfil 1</button>
+        <button class="btn-link" onclick="abrir('https://xatspace.com/perfilgab')">Xatspace - Perfil 2</button>
     </div>
 
-    <button class="btn-color" onclick="nextColor()">Mudar Cor</button>
+    <button class="btn-color" onclick="nextColor()">Cor</button>
 </div>
 
 <div id="viewer">
@@ -120,7 +120,6 @@
     }
 
     function getVisits() {
-        // ID único atualizado para garantir contagem nova e global
         const url = "https://api.counterapi.dev/v1/xatspace_final_refresh_2026/increment";
         fetch(url)
             .then(res => res.json())
@@ -142,25 +141,23 @@
         lista.style.display = (lista.style.display === 'block') ? 'none' : 'block';
     }
 
-    // --- FUNÇÃO DE ABERTURA COM REFRESH DE CACHE ---
     function abrir(url) {
         const frame = document.getElementById('frame');
         const viewer = document.getElementById('viewer');
         
-        // Remove o frame antigo e cria um novo para garantir que não haja "memória" da página azul
-        frame.src = "about:blank"; 
+        // Limpeza absoluta do frame anterior
+        frame.removeAttribute('src'); 
         
         setTimeout(() => {
-            // Adiciona um código único de tempo para forçar o navegador a ler o link AGORA
-            const forceRefresh = url + "?cache=" + new Date().getTime();
-            frame.src = forceRefresh;
+            // O link agora vai sem encurtador, direto ao ponto
+            frame.setAttribute('src', url);
             viewer.style.display = 'block';
-        }, 100);
+        }, 50);
     }
 
     function fechar() {
         document.getElementById('viewer').style.display = 'none';
-        document.getElementById('frame').src = '';
+        document.getElementById('frame').removeAttribute('src');
     }
 </script>
 
