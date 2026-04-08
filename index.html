@@ -2,10 +2,10 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Xatspace - Galeria</title>
+    <title>Xatspace - Galeria Oficial</title>
     <style>
         :root {
-            --main-color: #00d9ff; /* Azul Principal */
+            --main-color: #00d9ff; /* Começa Azul */
             --bg-dark: #02050a;
         }
 
@@ -33,7 +33,6 @@
 
         h1 { font-size: 2.5rem; margin-bottom: 15px; text-shadow: 0 0 15px var(--main-color); letter-spacing: 2px; text-transform: uppercase; }
 
-        /* --- CONTADOR GLOBAL (ESTILO WRS) --- */
         .visitor-counter {
             font-family: 'Courier New', monospace; font-size: 1.5rem; color: #fff;
             margin-bottom: 20px; letter-spacing: 5px; background: #000;
@@ -91,15 +90,15 @@
     <div class="visitor-counter" id="display-count">000001</div>
 
     <div id="hit-counter-container">
-        <img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgaleria_xat_final_v4_reset&count_bg=%23000000&title_bg=%23000000&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false" 
+        <img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgaleria_xat_v6_final_fix&count_bg=%23000000&title_bg=%23000000&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false" 
              onload="syncCounter()">
     </div>
 
     <button class="btn-main" onclick="abrirLista()">Galeria de Xatspace</button>
 
     <div id="listaLinks" class="lista-links">
-        <button class="btn-link" onclick="abrir('https://tinyurl.com/perfill2')">Xatspace - perfil 1</button>
-        <button class="btn-link" onclick="abrir('https://tinyurl.com/perfilgab')">Xatspace - perfil 2</button>
+        <button class="btn-link" onclick="abrir('https://tinyurl.com/perfilrosa')">Xatspace - Perfil 1 (Rosa)</button>
+        <button class="btn-link" onclick="abrir('https://tinyurl.com/perfilgab')">Xatspace - Perfil 2 (Azul)</button>
     </div>
 
     <div class="color-selector">
@@ -134,9 +133,9 @@
     }
 
     function syncCounter() {
-        let count = parseInt(localStorage.getItem('wrs_global_v4')) || 0;
+        let count = parseInt(localStorage.getItem('wrs_v6_count')) || 0;
         count++;
-        localStorage.setItem('wrs_global_v4', count);
+        localStorage.setItem('wrs_v6_count', count);
         document.getElementById('display-count').innerText = count.toString().padStart(6, '0');
     }
 
