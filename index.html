@@ -95,11 +95,11 @@
     <button class="btn-main" onclick="abrirLista()">Galeria de Xatspace</button>
 
     <div id="listaLinks" class="lista-links">
-        <button class="btn-link" onclick="abrir('https://cutt.ly/perfil-rosa-oficial')">Xatspace - Perfil 1</button>
-        <button class="btn-link" onclick="abrir('https://bit.ly/perfil-azul-gab')">Xatspace - Perfil 2</button>
+        <button class="btn-link" onclick="abrir('https://tinyurl.com/perfilrosa')">Xatspace - Perfil 1</button>
+        <button class="btn-link" onclick="abrir('https://tinyurl.com/perfilgab')">Xatspace - Perfil 2</button>
     </div>
 
-    <button class="btn-color" onclick="nextColor()">cor</button>
+    <button class="btn-color" onclick="nextColor()">Mudar Cor</button>
 </div>
 
 <div id="viewer">
@@ -120,7 +120,8 @@
     }
 
     function getVisits() {
-        const url = "https://api.counterapi.dev/v1/xatspace_final_2026/increment";
+        // ID único atualizado para garantir contagem nova e global
+        const url = "https://api.counterapi.dev/v1/xatspace_final_refresh_2026/increment";
         fetch(url)
             .then(res => res.json())
             .then(data => { document.getElementById('display-count').innerText = data.count.toString().padStart(6, '0'); })
@@ -141,12 +142,20 @@
         lista.style.display = (lista.style.display === 'block') ? 'none' : 'block';
     }
 
-    // --- FUNÇÃO ABRIR COM TRAVA ANTI-CACHE ---
+    // --- FUNÇÃO DE ABERTURA COM REFRESH DE CACHE ---
     function abrir(url) {
-        // Isso força o navegador a carregar o link "fresco" toda vez
-        const antiCache = url + "?t=" + Math.floor(Math.random() * 10000);
-        document.getElementById('frame').src = antiCache;
-        document.getElementById('viewer').style.display = 'block';
+        const frame = document.getElementById('frame');
+        const viewer = document.getElementById('viewer');
+        
+        // Remove o frame antigo e cria um novo para garantir que não haja "memória" da página azul
+        frame.src = "about:blank"; 
+        
+        setTimeout(() => {
+            // Adiciona um código único de tempo para forçar o navegador a ler o link AGORA
+            const forceRefresh = url + "?cache=" + new Date().getTime();
+            frame.src = forceRefresh;
+            viewer.style.display = 'block';
+        }, 100);
     }
 
     function fechar() {
