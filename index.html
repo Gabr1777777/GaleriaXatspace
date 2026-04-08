@@ -95,11 +95,11 @@
     <button class="btn-main" onclick="abrirLista()">Galeria de Xatspace</button>
 
     <div id="listaLinks" class="lista-links">
-        <button class="btn-link" onclick="abrir('https://xatspace.com/perfilrosa')">Xatspace - Perfil 1</button>
-        <button class="btn-link" onclick="abrir('https://xatspace.com/perfilgab')">Xatspace - Perfil 2</button>
+        <button class="btn-link" onclick="abrir('https://tinyurl.com/perfilrosa')">Xatspace - Perfil 1</button>
+        <button class="btn-link" onclick="abrir('https://gabr1777777.github.io/test1/')">Xatspace - Perfil 2</button>
     </div>
 
-    <button class="btn-color" onclick="nextColor()">Cor</button>
+    <button class="btn-color" onclick="nextColor()">Mudar Cor</button>
 </div>
 
 <div id="viewer">
@@ -108,6 +108,7 @@
 </div>
 
 <script>
+    // Gerador de Estrelas
     const bg = document.getElementById('stars-bg');
     for(let i=0; i<100; i++) {
         let s = document.createElement('div');
@@ -119,6 +120,7 @@
         bg.appendChild(s);
     }
 
+    // Contador de Visitas Global
     function getVisits() {
         const url = "https://api.counterapi.dev/v1/xatspace_final_refresh_2026/increment";
         fetch(url)
@@ -128,6 +130,7 @@
     }
     window.onload = getVisits;
 
+    // Cores do Tema
     const cores = ['#00d9ff', '#ff007f', '#00ff00', '#ffff00', '#ff4500', '#9400d3', '#ffffff', '#ff0000', '#0000ff', '#00ced1'];
     let corAtual = 0;
 
@@ -141,23 +144,24 @@
         lista.style.display = (lista.style.display === 'block') ? 'none' : 'block';
     }
 
+    // Função para abrir os perfis com limpeza de cache
     function abrir(url) {
         const frame = document.getElementById('frame');
         const viewer = document.getElementById('viewer');
         
-        // Limpeza absoluta do frame anterior
-        frame.removeAttribute('src'); 
+        frame.src = "about:blank"; // Limpa o frame antes de carregar
         
         setTimeout(() => {
-            // O link agora vai sem encurtador, direto ao ponto
-            frame.setAttribute('src', url);
+            // Adiciona timestamp para ignorar cache antigo
+            const cleanUrl = url + (url.includes('?') ? '&' : '?') + 'v=' + new Date().getTime();
+            frame.src = cleanUrl;
             viewer.style.display = 'block';
         }, 50);
     }
 
     function fechar() {
         document.getElementById('viewer').style.display = 'none';
-        document.getElementById('frame').removeAttribute('src');
+        document.getElementById('frame').src = '';
     }
 </script>
 
