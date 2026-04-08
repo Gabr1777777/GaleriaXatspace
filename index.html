@@ -141,10 +141,12 @@
         lista.style.display = (lista.style.display === 'block') ? 'none' : 'block';
     }
 
-    function abrir(url) {
-        document.getElementById('frame').src = url;
-        document.getElementById('viewer').style.display = 'block';
-    }
+function abrir(url) {
+    // Adiciona um "carimbo" de tempo para evitar cache do navegador
+    const cleanUrl = url + (url.includes('?') ? '&' : '?') + 't=' + new Date().getTime();
+    document.getElementById('frame').src = cleanUrl;
+    document.getElementById('viewer').style.display = 'block';
+}
 
     function fechar() {
         document.getElementById('viewer').style.display = 'none';
