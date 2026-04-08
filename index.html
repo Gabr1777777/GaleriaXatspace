@@ -95,7 +95,7 @@
     <button class="btn-main" onclick="abrirLista()">Galeria de Xatspace</button>
 
     <div id="listaLinks" class="lista-links">
-        <button class="btn-link" onclick="abrir('https://tinyurl.com/perfilrosa')">Xatspace - Perfil 1</button>
+        <button class="btn-link" onclick="abrir('https://gabr1777777.github.io/test2/')">Xatspace - Perfil 1</button>
         <button class="btn-link" onclick="abrir('https://gabr1777777.github.io/test1/')">Xatspace - Perfil 2</button>
     </div>
 
@@ -108,7 +108,6 @@
 </div>
 
 <script>
-    // Gerador de Estrelas
     const bg = document.getElementById('stars-bg');
     for(let i=0; i<100; i++) {
         let s = document.createElement('div');
@@ -120,7 +119,6 @@
         bg.appendChild(s);
     }
 
-    // Contador de Visitas Global
     function getVisits() {
         const url = "https://api.counterapi.dev/v1/xatspace_final_refresh_2026/increment";
         fetch(url)
@@ -130,7 +128,6 @@
     }
     window.onload = getVisits;
 
-    // Cores do Tema
     const cores = ['#00d9ff', '#ff007f', '#00ff00', '#ffff00', '#ff4500', '#9400d3', '#ffffff', '#ff0000', '#0000ff', '#00ced1'];
     let corAtual = 0;
 
@@ -144,15 +141,14 @@
         lista.style.display = (lista.style.display === 'block') ? 'none' : 'block';
     }
 
-    // Função para abrir os perfis com limpeza de cache
     function abrir(url) {
         const frame = document.getElementById('frame');
         const viewer = document.getElementById('viewer');
         
-        frame.src = "about:blank"; // Limpa o frame antes de carregar
+        frame.src = "about:blank"; 
         
         setTimeout(() => {
-            // Adiciona timestamp para ignorar cache antigo
+            // Timestamp para forçar atualização e ignorar cache antigo
             const cleanUrl = url + (url.includes('?') ? '&' : '?') + 'v=' + new Date().getTime();
             frame.src = cleanUrl;
             viewer.style.display = 'block';
