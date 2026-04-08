@@ -33,9 +33,26 @@
 
         h1 { font-size: 2.5rem; margin-bottom: 15px; text-shadow: 0 0 15px var(--main-color); letter-spacing: 2px; text-transform: uppercase; }
 
+        /* Estilo da área do contador central */
+        .counter-container {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .label-visitas {
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            color: var(--main-color);
+            text-transform: uppercase;
+            font-size: 1rem;
+        }
+
         .visitor-counter {
             font-family: 'Courier New', monospace; font-size: 1.5rem; color: #fff;
-            margin-bottom: 20px; letter-spacing: 5px; background: #000;
+            letter-spacing: 5px; background: #000;
             display: inline-block; padding: 10px 20px; border-radius: 5px; 
             border: 2px solid var(--main-color);
             box-shadow: inset 0 0 15px var(--main-color);
@@ -74,17 +91,6 @@
             transition: 0.3s; font-weight: bold;
         }
 
-        /* Estilo do Novo Contador Inferior */
-        #visit-counter {
-            position: fixed; bottom: 20px; left: 20px; z-index: 1000001; 
-            background: rgba(0, 0, 0, 0.8); 
-            border: 1px solid var(--main-color); 
-            padding: 8px 15px; border-radius: 8px; 
-            display: flex; flex-direction: column; align-items: center;
-            box-shadow: 0 0 15px var(--main-color);
-            transition: 0.3s;
-        }
-
         @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 
         #viewer { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 100; background: black; }
@@ -99,7 +105,10 @@
 <div class="main-card">
     <h1>Xatspace</h1>
     
-    <div class="visitor-counter" id="display-count">000000</div>
+    <div class="counter-container">
+        <span class="label-visitas">Visitas:</span>
+        <div class="visitor-counter" id="display-count">000000</div>
+    </div>
 
     <button class="btn-main" onclick="abrirLista()">Galeria de Xatspace</button>
 
@@ -110,11 +119,6 @@
     </div>
 
     <button class="btn-color" onclick="nextColor()">COR</button>
-</div>
-
-<div id="visit-counter">
-    <span style="color: var(--main-color); font-size: 9px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;">Visitas</span>
-    <span id="count-number" style="color: #fff; font-size: 18px; font-family: monospace;">...</span>
 </div>
 
 <div id="viewer">
@@ -134,25 +138,21 @@
         bg.appendChild(s);
     }
 
-    // --- SISTEMA DE CONTADOR (NOVO ID PARA ZERAR) ---
+    // --- SISTEMA DE CONTADOR CENTRALIZADO ---
     const ID_VISITAS = "galeria_xat_new_start_2026"; 
 
     async function carregarContadores() {
         const displayPrincipal = document.getElementById('display-count');
-        const displayInferior = document.getElementById('count-number');
         
         try {
             const resV = await fetch(`https://api.counterapi.dev/v1/xatspace-galeria/${ID_VISITAS}/up`);
             const dataV = await resV.json();
             const valor = (dataV.count || dataV.value).toString();
             
-            // Atualiza ambos os contadores no site
             displayPrincipal.innerText = valor.padStart(6, '0');
-            displayInferior.innerText = valor.padStart(5, '0');
         } catch(e) {
             console.error("Erro no contador:", e);
             displayPrincipal.innerText = "000001";
-            displayInferior.innerText = "00001";
         }
     }
 
