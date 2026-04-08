@@ -74,6 +74,17 @@
             transition: 0.3s; font-weight: bold;
         }
 
+        /* Estilo do Novo Contador Inferior */
+        #visit-counter {
+            position: fixed; bottom: 20px; left: 20px; z-index: 1000001; 
+            background: rgba(0, 0, 0, 0.8); 
+            border: 1px solid var(--main-color); 
+            padding: 8px 15px; border-radius: 8px; 
+            display: flex; flex-direction: column; align-items: center;
+            box-shadow: 0 0 15px var(--main-color);
+            transition: 0.3s;
+        }
+
         @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 
         #viewer { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 100; background: black; }
@@ -101,6 +112,11 @@
     <button class="btn-color" onclick="nextColor()">COR</button>
 </div>
 
+<div id="visit-counter">
+    <span style="color: var(--main-color); font-size: 9px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;">Visitas</span>
+    <span id="count-number" style="color: #fff; font-size: 18px; font-family: monospace;">...</span>
+</div>
+
 <div id="viewer">
     <button class="back-btn" onclick="fechar()">← Voltar</button>
     <iframe id="frame"></iframe>
@@ -118,27 +134,29 @@
         bg.appendChild(s);
     }
 
-    // --- SISTEMA DE CONTADOR REFORMULADO ---
-    function countVisit() {
-        const display = document.getElementById('display-count');
-        // ID único para esta galeria para evitar conflitos
-        const galleryID = "galeria_xat_oficial_v2026_final";
+    // --- SISTEMA DE CONTADOR (NOVO ID PARA ZERAR) ---
+    const ID_VISITAS = "galeria_xat_new_start_2026"; 
+
+    async function carregarContadores() {
+        const displayPrincipal = document.getElementById('display-count');
+        const displayInferior = document.getElementById('count-number');
         
-        fetch(`https://api.countapi.xyz/hit/${galleryID}/visits`)
-        .then(res => res.json())
-        .then(res => {
-            display.innerHTML = res.value.toString().padStart(6, '0');
-        })
-        .catch(() => {
-            // Se a API externa falhar ou estiver bloqueada, usamos o local como garantia
-            let localCount = parseInt(localStorage.getItem('backup_hits')) || 0;
-            localCount++;
-            localStorage.setItem('backup_hits', localCount);
-            display.innerHTML = localCount.toString().padStart(6, '0');
-        });
+        try {
+            const resV = await fetch(`https://api.counterapi.dev/v1/xatspace-galeria/${ID_VISITAS}/up`);
+            const dataV = await resV.json();
+            const valor = (dataV.count || dataV.value).toString();
+            
+            // Atualiza ambos os contadores no site
+            displayPrincipal.innerText = valor.padStart(6, '0');
+            displayInferior.innerText = valor.padStart(5, '0');
+        } catch(e) {
+            console.error("Erro no contador:", e);
+            displayPrincipal.innerText = "000001";
+            displayInferior.innerText = "00001";
+        }
     }
 
-    window.onload = countVisit;
+    window.addEventListener('load', carregarContadores);
 
     const cores = ['#00d9ff', '#ff007f', '#00ff00', '#ffff00', '#ff4500', '#9400d3', '#ffffff', '#ff0000', '#0000ff', '#00ced1'];
     let corAtual = 0;
