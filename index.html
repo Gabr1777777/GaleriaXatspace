@@ -5,7 +5,7 @@
     <title>Xatspace - Galeria Oficial</title>
     <style>
         :root {
-            --main-color: #00d9ff; /* Começa Azul */
+            --main-color: #00d9ff;
             --bg-dark: #02050a;
         }
 
@@ -33,6 +33,7 @@
 
         h1 { font-size: 2.5rem; margin-bottom: 15px; text-shadow: 0 0 15px var(--main-color); letter-spacing: 2px; text-transform: uppercase; }
 
+        /* --- CONTADOR GLOBAL REAL --- */
         .visitor-counter {
             font-family: 'Courier New', monospace; font-size: 1.5rem; color: #fff;
             margin-bottom: 20px; letter-spacing: 5px; background: #000;
@@ -41,8 +42,6 @@
             box-shadow: inset 0 0 15px var(--main-color);
             min-width: 160px;
         }
-        
-        #hit-counter-container { display: none; }
 
         .btn-main {
             display: block; width: 100%; padding: 18px;
@@ -87,18 +86,13 @@
 <div class="main-card">
     <h1>Xatspace</h1>
     
-    <div class="visitor-counter" id="display-count">000001</div>
-
-    <div id="hit-counter-container">
-        <img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgaleria_xat_v6_final_fix&count_bg=%23000000&title_bg=%23000000&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false" 
-             onload="syncCounter()">
-    </div>
+    <div class="visitor-counter" id="display-count">000000</div>
 
     <button class="btn-main" onclick="abrirLista()">Galeria de Xatspace</button>
 
     <div id="listaLinks" class="lista-links">
         <button class="btn-link" onclick="abrir('https://tinyurl.com/perfilrosa')">Xatspace - Perfil 1 (Rosa)</button>
-        <button class="btn-link" onclick="abrir('https://tinyurl.com/perfilgab')">Xatspace - Perfil 2 (Azul)</button>
+        <button class="btn-link" onclick="abrir('https://tinyurl.com/perfilgab')">Xatspace - Perfil 2 (Pass: 1009 (Azul)</button>
     </div>
 
     <div class="color-selector">
@@ -121,6 +115,7 @@
 </div>
 
 <script>
+    // Criar Estrelas
     const bg = document.getElementById('stars-bg');
     for(let i=0; i<100; i++) {
         let s = document.createElement('div');
@@ -132,12 +127,27 @@
         bg.appendChild(s);
     }
 
-    function syncCounter() {
-        let count = parseInt(localStorage.getItem('wrs_v6_count')) || 0;
-        count++;
-        localStorage.setItem('wrs_v6_count', count);
-        document.getElementById('display-count').innerText = count.toString().padStart(6, '0');
+    // --- CONTADOR GLOBAL ATUALIZADO ---
+    // Usando API externa estável para garantir que o número suba para todos
+    function getVisits() {
+        const url = "https://api.counterapi.dev/v1/xatspace_galeria_oficial_2026/visits/increment";
+        
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('display-count').innerText = data.count.toString().padStart(6, '0');
+            })
+            .catch(error => {
+                console.log("Erro no contador, usando fallback local.");
+                let localCount = parseInt(localStorage.getItem('backup_count')) || 1;
+                localCount++;
+                localStorage.setItem('backup_count', localCount);
+                document.getElementById('display-count').innerText = localCount.toString().padStart(6, '0');
+            });
     }
+
+    // Executa ao carregar
+    window.onload = getVisits;
 
     function abrirLista() {
         const lista = document.getElementById('listaLinks');
