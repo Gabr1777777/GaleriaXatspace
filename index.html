@@ -33,12 +33,16 @@
             border: 2px solid var(--main-color);
             box-shadow: 0 0 30px rgba(0, 217, 255, 0.2);
             backdrop-filter: blur(12px);
-            width: 380px;
+            width: auto; /* Ajustado para crescer horizontalmente */
+            display: flex; /* Flex para permitir lado a lado */
+            align-items: flex-start;
+            gap: 30px;
         }
+
+        .content-left { width: 380px; } /* Mantém a largura original da esquerda */
 
         h1 { font-size: 2.5rem; margin-bottom: 15px; text-shadow: 0 0 15px var(--main-color); letter-spacing: 2px; text-transform: uppercase; }
 
-        /* Estilo da área do contador central */
         .counter-container {
             margin-bottom: 20px;
             display: flex;
@@ -74,9 +78,14 @@
         }
 
         .lista-links {
-            display: none; margin-top: 20px; padding-top: 15px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: none; 
+            padding-left: 25px;
+            border-left: 1px solid rgba(255, 255, 255, 0.2); /* Divisor lateral */
             animation: fadeIn 0.5s ease;
+            max-height: 500px;
+            overflow-y: auto;
+            width: 320px;
+            text-align: left;
         }
 
         .btn-link {
@@ -96,13 +105,12 @@
             transition: 0.3s; font-weight: bold;
         }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateX(10px); } to { opacity: 1; transform: translateX(0); } }
 
         #viewer { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 100; background: black; }
         iframe { width: 100%; height: 100%; border: none; }
         .back-btn { position: fixed; top: 20px; left: 20px; z-index: 110; padding: 10px 25px; background: var(--main-color); color: #000; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; text-transform: uppercase; }
 
-        /* Estilo do Alerta de Proteção */
         #copyright-alert {
             display: none;
             position: fixed;
@@ -130,28 +138,30 @@
 <div id="copyright-alert">Copyright - Acesso Proibido - Gabr (1777777)</div>
 
 <div class="main-card">
-    <h1>Xatspace</h1>
-    
-    <div class="counter-container">
-        <span class="label-visitas">Visitas:</span>
-        <div class="visitor-counter" id="display-count">000000</div>
-    </div>
+    <div class="content-left">
+        <h1>Xatspace</h1>
+        
+        <div class="counter-container">
+            <span class="label-visitas">Visitas:</span>
+            <div class="visitor-counter" id="display-count">000000</div>
+        </div>
 
-    <button class="btn-main" onclick="abrirLista()">Galeria de Xatspace</button>
+        <button class="btn-main" onclick="abrirLista()">Galeria de Xatspace</button>
+        
+        <button class="btn-color" onclick="nextColor()">COR</button>
+    </div>
 
     <div id="listaLinks" class="lista-links">
         <button class="btn-link" onclick="abrir('https://gabr1777777.github.io/PerfilRosa/')">Xatspace - Perfil 1 - 2000 XATS</button>
         <button class="btn-link" onclick="abrir('https://gabr1777777.github.io/PerfilAzul/')">Xatspace - Perfil 2 PASS:1009 - 2500 XATS</button>
         <button class="btn-link" onclick="abrir('https://gabr1777777.github.io/PerfilRosa2/')">Xatspace - Perfil 3 - 2000 XATS</button>
-         <button class="btn-link" onclick="abrir('https://gabr1777777.github.io/PerfilCinza/')">Xatspace - Perfil 4 - 200 XATS</button>
+        <button class="btn-link" onclick="abrir('https://gabr1777777.github.io/PerfilCinza/')">Xatspace - Perfil 4 - 200 XATS</button>
         <button class="btn-link" onclick="abrir('https://gabr1777777.github.io/PerfilVermelho/')">Xatspace - Perfil 5 (Married) - 2000 XATS</button>
-       <button class="btn-link" onclick="abrir('https://gabr1777777.github.io/PerfilAmarelo/')">Xatspace - Perfil 6 - 1500 XATS</button>
+        <button class="btn-link" onclick="abrir('https://gabr1777777.github.io/PerfilAmarelo/')">Xatspace - Perfil 6 - 1500 XATS</button>
         <button class="btn-link" onclick="abrir('https://gabr1777777.github.io/PerfilVerde/')">Xatspace - Perfil 7 - 2000 XATS</button>
         <button class="btn-link" onclick="abrir('https://gabr1777777.github.io/GaleriaGifs/')">Xatspace - Galeria de GIFs - 3500 XATS</button>
         <button class="btn-link" onclick="abrir('https://gabr1777777.github.io/GaleriaGifs2/')">Xatspace - Galeria de GIFs 2 - 3500 XATS</button>
     </div>
-    
-    <button class="btn-color" onclick="nextColor()">COR</button>
 </div>
 
 <div id="viewer">
@@ -160,7 +170,6 @@
 </div>
 
 <script>
-    // --- SISTEMA DE PROTEÇÃO ---
     function showCopyright(e) {
         if (e) e.preventDefault();
         const alertBox = document.getElementById('copyright-alert');
@@ -172,7 +181,6 @@
     }
 
     document.addEventListener('keydown', function(e) {
-        // Bloqueia Ctrl+U, Ctrl+Shift+I (Inspecionar), F12, Ctrl+S, Ctrl+C
         if (e.ctrlKey && (e.keyCode === 85 || e.keyCode === 73 || e.keyCode === 83 || e.keyCode === 67) || e.keyCode === 123) {
             showCopyright(e);
             return false;
@@ -190,17 +198,14 @@
         bg.appendChild(s);
     }
 
-    // --- SISTEMA DE CONTADOR CENTRALIZADO ---
     const ID_VISITAS = "galeria_xat_new_start_2026"; 
 
     async function carregarContadores() {
         const displayPrincipal = document.getElementById('display-count');
-        
         try {
             const resV = await fetch(`https://api.counterapi.dev/v1/xatspace-galeria/${ID_VISITAS}/up`);
             const dataV = await resV.json();
             const valor = (dataV.count || dataV.value).toString();
-            
             displayPrincipal.innerText = valor.padStart(6, '0');
         } catch(e) {
             console.error("Erro no contador:", e);
