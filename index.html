@@ -79,10 +79,12 @@
             box-shadow: 0 0 15px var(--main-color);
         }
 
-        /* Lista na Direita */
+        /* Lista na Direita com Barra de Rolagem */
         .lista-links {
             display: none; 
             width: 300px;
+            max-height: 80vh;
+            overflow-y: auto;
             background: rgba(255, 255, 255, 0.05);
             padding: 20px; border-radius: 25px;
             border: 2px solid var(--main-color);
@@ -90,6 +92,11 @@
             backdrop-filter: blur(12px);
             animation: fadeInRight 0.5s ease;
         }
+
+        /* Estilização da Scrollbar */
+        .lista-links::-webkit-scrollbar { width: 5px; }
+        .lista-links::-webkit-scrollbar-track { background: transparent; }
+        .lista-links::-webkit-scrollbar-thumb { background: var(--main-color); border-radius: 10px; }
 
         .btn-link {
             display: block; width: 100%; padding: 12px; margin: 8px 0;
