@@ -48,9 +48,10 @@
         .counter-container {
             margin-bottom: 20px;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 5px;
         }
 
         .label-visitas {
@@ -58,16 +59,18 @@
             font-weight: bold;
             color: var(--main-color);
             text-transform: uppercase;
-            font-size: 1rem;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
         }
 
         .visitor-counter {
-            font-family: 'Courier New', monospace; font-size: 1.5rem; color: #fff;
-            letter-spacing: 5px; background: #000;
-            display: inline-block; padding: 10px 20px; border-radius: 5px; 
+            font-family: 'Courier New', monospace; font-size: 1.8rem; color: #fff;
+            letter-spacing: 3px; background: #000;
+            display: inline-block; padding: 10px 25px; border-radius: 5px; 
             border: 2px solid var(--main-color);
             box-shadow: inset 0 0 15px var(--main-color);
-            min-width: 160px;
+            min-width: 180px;
+            font-weight: bold;
         }
 
         .btn-main {
@@ -159,8 +162,8 @@
         <h1>Xatspace</h1>
         
         <div class="counter-container">
-            <span class="label-visitas">Visitas:</span>
-            <div class="visitor-counter" id="display-count">000000</div>
+            <span class="label-visitas">Brasília, BR:</span>
+            <div class="visitor-counter" id="clock-display">00:00:00</div>
         </div>
 
         <button class="btn-main" onclick="abrirLista()">Galeria de Xatspace</button>
@@ -195,6 +198,15 @@
 </div>
 
 <script>
+    function updateClock() {
+        const now = new Date();
+        const options = { timeZone: 'America/Sao_Paulo', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
+        const brasilTime = new Intl.DateTimeFormat('pt-BR', options).format(now);
+        document.getElementById('clock-display').innerText = brasilTime;
+    }
+    setInterval(updateClock, 1000);
+    window.addEventListener('load', updateClock);
+
     function showCopyright(e) {
         if (e) e.preventDefault();
         const alertBox = document.getElementById('copyright-alert');
@@ -221,20 +233,6 @@
         s.style.animationDelay = Math.random() * 5 + 's';
         bg.appendChild(s);
     }
-
-    const ID_VISITAS = "galeria_xat_new_start_2026"; 
-    async function carregarContadores() {
-        const displayPrincipal = document.getElementById('display-count');
-        try {
-            const resV = await fetch(`https://api.counterapi.dev/v1/xatspace-galeria/${ID_VISITAS}/up`);
-            const dataV = await resV.json();
-            const valor = (dataV.count || dataV.value).toString();
-            displayPrincipal.innerText = valor.padStart(6, '0');
-        } catch(e) {
-            displayPrincipal.innerText = "000001";
-        }
-    }
-    window.addEventListener('load', carregarContadores);
 
     const cores = ['#00d9ff', '#ff007f', '#00ff00', '#ffff00', '#ff4500', '#9400d3', '#ffffff', '#ff0000', '#0000ff', '#00ced1'];
     let corAtual = 0;
